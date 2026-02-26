@@ -1,0 +1,383 @@
+:root {
+  --bg: #f3f7f4;
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-border: rgba(9, 103, 95, 0.18);
+  --primary: #0c7f70;
+  --primary-deep: #055a50;
+  --accent: #ee6b2f;
+  --text: #122326;
+  --muted: #5f7476;
+  --danger: #be2f3f;
+  --ok: #14744b;
+  --shadow: 0 18px 35px rgba(12, 56, 56, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: "Avenir Next", "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  background: radial-gradient(circle at 10% 10%, #d8f3e8, #f3f7f4 46%),
+    radial-gradient(circle at 95% 85%, #ffd8c6, transparent 38%),
+    linear-gradient(120deg, #eef8f1, #fdfaf4);
+}
+
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.38;
+  background-image: linear-gradient(to right, rgba(8, 106, 95, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(8, 106, 95, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.app {
+  width: min(1080px, calc(100% - 32px));
+  margin: 28px auto 34px;
+  position: relative;
+}
+
+.hero {
+  margin-bottom: 16px;
+  padding: 14px 10px;
+}
+
+.hero-tag {
+  margin: 0;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.hero h1 {
+  margin: 8px 0 2px;
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+.hero-subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.panel {
+  backdrop-filter: blur(8px);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+
+.config-panel,
+.game-panel {
+  display: block;
+  width: 100%;
+}
+
+.config-panel {
+  margin-right: 0;
+}
+
+h2 {
+  margin: 0 0 14px;
+  font-size: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+label,
+fieldset {
+  background: #f5fbf8;
+  border: 1px solid rgba(11, 93, 83, 0.14);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+label span,
+legend {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #21484a;
+  font-weight: 600;
+}
+
+input[type="number"],
+select,
+#guess-input {
+  width: 100%;
+  border: 1px solid #b7cec8;
+  background: #fff;
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 10px 12px;
+  color: var(--text);
+}
+
+fieldset {
+  margin: 0;
+}
+
+.radio-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 14px;
+  padding: 8px 0 2px;
+  background: transparent;
+  border: 0;
+}
+
+.radio-item input {
+  margin-top: 3px;
+}
+
+.config-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 11px;
+  padding: 11px 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(7, 90, 81, 0.28);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, #f18b4f, var(--accent));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(206, 94, 42, 0.25);
+}
+
+.btn-ghost {
+  background: #eff7f4;
+  color: #134b4e;
+  border: 1px solid #b7d4ce;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  border-radius: 999px;
+  padding: 5px 11px;
+  background: #d9f3ea;
+  color: #0a6256;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pill.soft {
+  background: #e9f3f0;
+  color: #26545a;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.guess-box {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+#guess-input {
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  text-align: center;
+  font-family: "SF Mono", "Menlo", "Consolas", monospace;
+}
+
+.hint {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f2faf7;
+  border: 1px dashed #b8d9d2;
+  color: #1f5557;
+  min-height: 44px;
+}
+
+.error {
+  min-height: 22px;
+  margin: 8px 0 0;
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.history-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-wrap {
+  overflow: auto;
+  border: 1px solid rgba(9, 103, 95, 0.12);
+  border-radius: 12px;
+  background: #fff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  border-bottom: 1px solid #e8efee;
+  text-align: left;
+  padding: 11px 10px;
+  white-space: nowrap;
+}
+
+th {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #516a6d;
+  background: #f7fbfa;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+.empty-row td {
+  color: #678282;
+  text-align: center;
+  padding: 24px 12px;
+}
+
+.result-panel {
+  border-color: rgba(20, 116, 75, 0.26);
+  background: linear-gradient(135deg, rgba(20, 116, 75, 0.1), rgba(238, 107, 47, 0.1));
+  animation: reveal 0.35s ease;
+}
+
+.result-line {
+  margin: 0;
+  font-size: 16px;
+  color: #194d4f;
+}
+
+.result-stats {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.result-stats div {
+  border-radius: 12px;
+  border: 1px solid rgba(8, 106, 95, 0.18);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 10px 12px;
+}
+
+.result-stats span {
+  display: block;
+  color: #4b6768;
+  font-size: 12px;
+}
+
+.result-stats strong {
+  margin-top: 4px;
+  display: block;
+  font-size: 22px;
+  color: #094f57;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .config-panel,
+  .game-panel {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .result-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .app {
+    width: calc(100% - 20px);
+    margin: 12px auto 20px;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  .guess-box {
+    grid-template-columns: 1fr;
+  }
+
+  #guess-input {
+    font-size: 22px;
+  }
+}

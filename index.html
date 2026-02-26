@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数字猎手 - 猜数字游戏</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <main class="app">
+      <header class="hero">
+        <p class="hero-tag">NUMBER HUNT</p>
+        <h1>数字猎手</h1>
+        <p class="hero-subtitle">设定规则，推理答案，用最少次数命中目标数字。</p>
+      </header>
+
+      <section class="panel config-panel">
+        <h2>游戏配置</h2>
+        <div class="form-grid">
+          <label>
+            <span>数字位数</span>
+            <input id="digit-length" type="number" min="2" max="10" value="4" />
+          </label>
+
+          <label>
+            <span>是否允许重复数字</span>
+            <select id="allow-repeat">
+              <option value="yes">允许重复数字</option>
+              <option value="no" selected>不允许重复数字</option>
+            </select>
+          </label>
+
+          <fieldset>
+            <legend>提示模式</legend>
+            <label class="radio-item">
+              <input type="radio" name="hint-mode" value="exact" checked />
+              <span>只提示位置和数字都正确的数量</span>
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="hint-mode" value="full" />
+              <span>同时提示“位置+数字正确”和“仅数字正确”</span>
+            </label>
+          </fieldset>
+        </div>
+
+        <div class="config-actions">
+          <button id="start-btn" class="btn btn-primary" type="button">开始游戏</button>
+          <button id="restart-btn" class="btn btn-ghost" type="button" disabled>再来一局</button>
+        </div>
+
+        <p id="config-error" class="error" role="alert"></p>
+      </section>
+
+      <section class="panel game-panel">
+        <h2>开始猜测</h2>
+        <div class="status-row">
+          <span id="game-state" class="pill">未开始</span>
+          <span id="live-stats" class="muted">请先配置并点击“开始游戏”</span>
+        </div>
+
+        <div class="guess-box">
+          <input
+            id="guess-input"
+            type="text"
+            inputmode="numeric"
+            placeholder="输入你的猜测"
+            autocomplete="off"
+            disabled
+          />
+          <button id="submit-btn" class="btn btn-accent" type="button" disabled>提交</button>
+        </div>
+
+        <p id="guess-error" class="error" role="alert"></p>
+        <p id="last-hint" class="hint">等待你的第一条猜测...</p>
+      </section>
+
+      <section id="result-panel" class="panel result-panel hidden" aria-live="polite">
+        <h2>命中目标</h2>
+        <p id="result-line" class="result-line"></p>
+        <div class="result-stats">
+          <div>
+            <span>答案</span>
+            <strong id="result-answer">-</strong>
+          </div>
+          <div>
+            <span>尝试次数</span>
+            <strong id="result-attempts">-</strong>
+          </div>
+          <div>
+            <span>用时</span>
+            <strong id="result-duration">-</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="history-title">
+          <h2>猜测记录</h2>
+          <span id="history-count" class="pill soft">0 次</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>猜测</th>
+                <th>系统提示</th>
+                <th>时间</th>
+              </tr>
+            </thead>
+            <tbody id="history-body">
+              <tr class="empty-row">
+                <td colspan="4">开始游戏后，这里会保存每次猜测记录</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
