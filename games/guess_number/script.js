@@ -340,7 +340,7 @@ function createDigitInputs() {
   for (let i = 0; i < state.config.digits; i++) {
     const input = document.createElement('input');
     input.type = 'text';
-    input.inputMode = 'numeric';
+    input.inputMode = 'none';
     input.maxLength = 1;
     input.classList.add('digit-cell');
     input.dataset.index = i;

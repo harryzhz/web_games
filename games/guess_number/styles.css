@@ -53,6 +53,7 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    touch-action: manipulation;
 }
 
 /* ===== Particles Canvas ===== */
@@ -574,6 +575,7 @@ body {
     transition: all var(--transition-fast);
     text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .digit-cell::-webkit-inner-spin-button,
