@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数字破译 — 猜数字游戏</title>
+  <meta name="description" content="一款充满挑战的数字解谜游戏，猜出系统随机生成的神秘数字！">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Animated background particles -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ==================== CONFIG SCREEN ==================== -->
+  <div id="config-screen" class="screen active">
+    <div class="logo-container">
+      <h1 class="logo">
+        <span class="logo-icon">🔐</span>
+        <span class="logo-text">数字破译</span>
+      </h1>
+      <p class="logo-subtitle">CRACK THE CODE</p>
+    </div>
+
+    <div class="config-card glass-panel">
+      <h2 class="config-title">游戏设置</h2>
+
+      <!-- Digit Count -->
+      <div class="config-group">
+        <label class="config-label">密码位数</label>
+        <div class="digit-selector" id="digit-selector">
+          <button class="digit-btn" data-value="2">2</button>
+          <button class="digit-btn" data-value="3">3</button>
+          <button class="digit-btn active" data-value="4">4</button>
+          <button class="digit-btn" data-value="5">5</button>
+          <button class="digit-btn" data-value="6">6</button>
+          <button class="digit-btn" data-value="7">7</button>
+          <button class="digit-btn" data-value="8">8</button>
+        </div>
+      </div>
+
+      <!-- Allow Duplicates & Difficulty -->
+      <div class="config-row">
+        <div class="config-group">
+          <label class="config-label">允许重复数字</label>
+          <div class="toggle-container">
+            <button class="toggle-btn" id="toggle-duplicates" data-active="false">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label-off">关闭</span>
+              <span class="toggle-label-on">开启</span>
+            </button>
+          </div>
+        </div>
+        <div class="config-group">
+          <label class="config-label">难度</label>
+          <div class="toggle-container">
+            <button class="toggle-btn difficulty-toggle" id="toggle-difficulty" data-active="false">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label-off">简单</span>
+              <span class="toggle-label-on">困难</span>
+            </button>
+          </div>
+          <p class="config-hint" id="difficulty-hint">简单模式：提示具体哪些数字正确</p>
+        </div>
+      </div>
+
+      <!-- Hint Mode -->
+      <div class="config-group">
+        <label class="config-label">玩法</label>
+        <div class="hint-mode-selector">
+          <button class="hint-mode-btn active" data-mode="position-only" id="hint-mode-position">
+            <span class="hint-mode-icon">🎯</span>
+            <span class="hint-mode-title">玩法 1</span>
+            <span class="hint-mode-desc">仅提示位置正确</span>
+          </button>
+          <button class="hint-mode-btn" data-mode="position-and-digit" id="hint-mode-both">
+            <span class="hint-mode-icon">🧩</span>
+            <span class="hint-mode-title">玩法 2</span>
+            <span class="hint-mode-desc">提示位置正确 + 数字正确</span>
+          </button>
+        </div>
+      </div>
+
+      <button class="start-btn" id="start-btn">
+        <span class="start-btn-text">开始破译</span>
+        <span class="start-btn-icon">▶</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== GAME SCREEN ==================== -->
+  <div id="game-screen" class="screen">
+    <!-- Top bar -->
+    <div class="game-topbar">
+      <button class="topbar-btn" id="back-btn" title="返回设置">
+        <span>◀</span> 返回
+      </button>
+      <div class="game-info">
+        <div class="info-badge">
+          <span class="info-label">位数</span>
+          <span class="info-value" id="info-digits">4</span>
+        </div>
+        <div class="info-badge">
+          <span class="info-label">玩法</span>
+          <span class="info-value" id="info-mode">玩法1</span>
+        </div>
+        <div class="info-badge">
+          <span class="info-label">难度</span>
+          <span class="info-value" id="info-difficulty">简单</span>
+        </div>
+        <div class="info-badge timer-badge">
+          <span class="info-label">⏱ 用时</span>
+          <span class="info-value" id="info-timer">00:00</span>
+        </div>
+      </div>
+      <button class="topbar-btn neon-btn" id="new-game-btn">
+        <span>🔄</span> 新游戏
+      </button>
+    </div>
+
+    <!-- Input area -->
+    <div class="input-area glass-panel">
+      <div class="attempt-counter">
+        第 <span id="attempt-number" class="neon-text">1</span> 次尝试
+      </div>
+      <div class="digit-inputs" id="digit-inputs">
+        <!-- Digit input cells generated by JS -->
+      </div>
+      <div class="input-actions">
+        <button class="action-btn clear-btn" id="clear-btn">清空</button>
+        <button class="action-btn submit-btn" id="submit-btn">
+          <span>提交猜测</span>
+          <span class="submit-icon">⏎</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Numpad -->
+    <div class="numpad glass-panel" id="numpad">
+      <button class="numpad-btn" data-num="1">1</button>
+      <button class="numpad-btn" data-num="2">2</button>
+      <button class="numpad-btn" data-num="3">3</button>
+      <button class="numpad-btn" data-num="4">4</button>
+      <button class="numpad-btn" data-num="5">5</button>
+      <button class="numpad-btn" data-num="6">6</button>
+      <button class="numpad-btn" data-num="7">7</button>
+      <button class="numpad-btn" data-num="8">8</button>
+      <button class="numpad-btn" data-num="9">9</button>
+      <button class="numpad-btn numpad-del" data-num="del">⌫</button>
+      <button class="numpad-btn" data-num="0">0</button>
+      <button class="numpad-btn numpad-submit" data-num="submit">✓</button>
+    </div>
+
+    <!-- History -->
+    <div class="history-area glass-panel" id="history-area">
+      <h3 class="history-title">猜测记录</h3>
+      <div class="history-header">
+        <span class="hist-col-num">#</span>
+        <span class="hist-col-guess">猜测</span>
+        <span class="hist-col-hint">提示</span>
+      </div>
+      <div class="history-list" id="history-list">
+        <div class="history-empty">尚无记录，开始你的第一次猜测吧！</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== WIN MODAL ==================== -->
+  <div id="win-overlay" class="overlay">
+    <div class="win-modal glass-panel">
+      <div class="win-celebration">
+        <div class="win-emoji">🎉</div>
+        <h2 class="win-title">破译成功！</h2>
+      </div>
+      <div class="win-answer">
+        <span class="win-answer-label">密码是</span>
+        <div class="win-answer-digits" id="win-answer-digits"></div>
+      </div>
+      <div class="win-stats">
+        <div class="stat-card">
+          <span class="stat-value" id="stat-attempts">0</span>
+          <span class="stat-label">尝试次数</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-time">00:00</span>
+          <span class="stat-label">用时</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-avg">0</span>
+          <span class="stat-label">平均命中率</span>
+        </div>
+      </div>
+      <div class="win-actions">
+        <button class="action-btn win-btn" id="win-replay-btn">🔄 再来一局</button>
+        <button class="action-btn win-btn secondary" id="win-settings-btn">⚙️ 更改设置</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
